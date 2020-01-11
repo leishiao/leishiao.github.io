@@ -18,3 +18,18 @@ The design process for a thread-safe class should include these three basic elem
 
 You cannot ensure thread safety without understanding an object's invariants and postconditions. Constraints on the valid values or state transitions for state variables can create atomicity and encapsulation requirements.
 
+#### 4.1.2 State-dependent Operations
+
+Operations with state-based preconditions are called state-dependent.
+
+What is the consequence if a precondition does not hold.
+
+What are the build-in mechanisms for efficiently waiting for condition to become true.  
+
+#### 4.1.3 State ownership
+
+When defining which variables form an object's state, we want to consider only the data that the object owns.
+
+In many cases, ownership and encapsulation goes together -- the object encapsulates the state it owns and owns the state it encapsulate. It is the owner of a given state variable that gets to decide on the locking protocol used to maintain the integrity of that variable's state. Ownership implies control, but once you publish a reference to a mutable object, you no longer have exclusive control; at best, you might have "shared ownership". A class usually does not own the objects passed to its method and constructors, unless the method is designed to explicitly transfer ownership of objects passed in.
+
+Collection classes often exhibit a form of "spilt 
