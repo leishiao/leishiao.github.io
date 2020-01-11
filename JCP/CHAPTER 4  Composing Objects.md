@@ -33,3 +33,23 @@ When defining which variables form an object's state, we want to consider only t
 In many cases, ownership and encapsulation goes together -- the object encapsulates the state it owns and owns the state it encapsulate. It is the owner of a given state variable that gets to decide on the locking protocol used to maintain the integrity of that variable's state. Ownership implies control, but once you publish a reference to a mutable object, you no longer have exclusive control; at best, you might have "shared ownership". A class usually does not own the objects passed to its method and constructors, unless the method is designed to explicitly transfer ownership of objects passed in.
 
 Collection classes often exhibit a form of "spilt 
+
+### 4.2 Instance confinement
+
+Encapsulation simplifies making classes thread-safe by promoting *instance confinement*, often just called *confinement*. Combining confinement with an appropriate  locking discipline can ensure that otherwise  non-thread-safe objects are used in a thread-safe manner.
+
+Encapsulating data with an object confines access to the data to the object's methods, making it easier to ensure that the data is always accessed with the appropriate lock held.
+
+Confined object must not escape their intended scope.
+
+Instance confinement allows different state variables to be guarded by different locks.
+
+Confinement makes it easier to build thread-safe classes because a class that confines its state can be analyzed for thread-safety without examine the whole program.
+
+#### 4.2.1 The Java monitor Pattern
+
+An object following the Java monitor pattern encapsulates all its mutable state and guards it with its intrinsic lock.
+
+There are advantages to using a private lock object instead of an object's intrinsic lock (or any other publicly accessible lock).
+
+### 4.3 Delegating Thread safety
