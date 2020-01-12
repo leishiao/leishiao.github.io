@@ -95,3 +95,14 @@ Sometimes, neither of above two approach adding method to the original class or 
 
 A third strategy is to extend the functionality of a class without extending the class itself by placing extension code in a "helper "class.
 
+Client-side locking entails guarding client code that use some object X with the lock X uses to guard its own state. In order to use client-side locking, you must know what lock X uses. 
+
+Client-side locking is even more fragile than extending a class, because it entails putting locking code for class C into classes that are totally unrelated to C.
+
+#### 4.4.2 Composition
+
+There is a less fragile alternative for adding an atomic operation to an existing class: *composition*.
+
+This pattern creates a new class  that implements the interfaces of the underlying class by delegate those operations to the underlying class and add new atomic operations with own intrinsic lock hold. 
+
+This strategy  does not care whether the underlying class is thread-safe, because it provides its own consistent locking that provides thread safety even if the underlying class changes its locking implementation.
