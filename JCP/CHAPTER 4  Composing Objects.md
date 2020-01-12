@@ -33,7 +33,7 @@ When defining which variables form an object's state, we want to consider only t
 
 In many cases, ownership and encapsulation goes together -- the object encapsulates the state it owns and owns the state it encapsulate. It is the owner of a given state variable that gets to decide on the locking protocol used to maintain the integrity of that variable's state. Ownership implies control, but once you publish a reference to a mutable object, you no longer have exclusive control; at best, you might have "shared ownership". A class usually does not own the objects passed to its method and constructors, unless the method is designed to explicitly transfer ownership of objects passed in.
 
-Collection classes often exhibit a form of "spilt ownership", in which the collection owns the state of the infrastructure, but client code owns the objects stored in the collection.
+Collection classes often exhibit a form of "spilt ownership", in which the collection owns the state of the collection infrastructure, but client code owns the objects stored in the collection.
 
 ### 4.2 Instance confinement
 
