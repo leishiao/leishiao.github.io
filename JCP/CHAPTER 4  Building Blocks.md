@@ -77,3 +77,19 @@ One of the most common producer-consumer designs is a thread pool coupled with a
 Blocking queues also provide an *offer* method, which returns a failure status value if the item cannot be enqueued. This enables you create more flexible policies for dealing with overload, such as reducing the number of producer threads.41
 
 > Bounded queues are a powerful resource management tool for building reliable applications: they make you program more robust to overload by throttling activities that threaten to produce more work than can be handled.
+
+It is tempting to assume that the consumers will always keep up, so that you need not place any bounds on the size of work queues, but this is a prescription for rearchitecting your system later.  Build resource management into your design early using blocking queues, it is a lot easier to do this up front than to retrofit it later.
+
+The class library contains several implementations of BlockingQueue. **LinkedBlockingQueue** and **ArrayBlockingQueue** are FIFO queues. **PriorityBlockingQueue** is a priority-ordered queue, it is useful when you want to process elements other than FIFO. 
+
+**SynchronousQueue**, is not really a queue at all, it maintains no storage space for queued elements. Instead, it maintains a list of threads waiting to enqueue or dequeue an element. Since a SynchronousQueue has no storage capacity, *take* and *put* will block unless another thread is already waiting to participate in the handoff. 
+
+#### 5.3.2 Serial thread confinement
+
+For mutable objects, producer-consumer designs and blocking queues  facilitate *serial thread confinement* for handing off ownership of objects from producers to consumers.
+
+Object pools exploit serial thread confinement, 'lending' an object to the requesting thread, the ownership can be transferred from thread to thread.
+
+One could also use other publication mechanisms for transferring the ownership of a mutable object, it is necessary to ensure that only one thread receives the object being handed off. BlockingQueue makes this easy; with a little more work, it could also done with the atomic *remove* method of ConcurrentMap or the *compareAndSet* method of AtomicReference.
+
+#### 5.3.3 Deques and work stealing
