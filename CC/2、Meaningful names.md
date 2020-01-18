@@ -17,3 +17,7 @@ Beware of using names which vary from in small ways.
 Spelling similar concepts similarly is *information*. Using inconsistent spelling is *disinformation.*
 
 **Make Meaningful Distinctions**
+
+If name must be different, then they should mean something different.
+Number-series naming (a1, a2, .. aN) is the opposite if intentional naming, they are noninformative.
+Noise words are another meaningless distinction. *Info* and *Data* are indistinct noise words like *a*, an, and *the*.
