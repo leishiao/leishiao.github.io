@@ -52,3 +52,14 @@ Queue admits more concurrent implementations than List without its random-access
 
 #### 5.2.1 ConcurrentHashMap
 
+ConcurrentHashMap is a hash-based Map like hashMap, but it uses an entirely different locking strategy that offers better concurrency and scalability. Instead of synchronizing every method on a common lock, restricting access to a single thread at a time, it uses a finer-grained locking mechanism called *lock striping* to allow a greater degree of shared access.
+
+ConcurrentHashMap, along with other concurrent collections, provides iterators that do not throw ConcurrentModificationException, thus eliminating the need to lock a collection during iteration. Iterator returned by ConcurrentHashMap is *weakly consisted* instead of *fail-fast*.
+
+#### 5.2.2 Additional atomic Map operations
+
+Since ConcurrentHashMap can not be locked for exclusive access, we cannot use client-side locking to create new atomic compound operations such as *put-if-absent*. Instead, a number of compound operations such as *put-if-absent*, *remove-if-equal*, and *replace-if-equal* are implemented as atomic operations and specified by the ConcurrentMap interface.
+
+#### 5.2.3 CopyOnWriteArrayList / CopyOnWriteArraySet
+
+The copy-on-write collections derive their thread safety from the fact that as long as an effectively immutable object is properly published no further synchronization is required when accessing it. They implement mutability by creating and publishing a new copy of the collection every time it is modified.
