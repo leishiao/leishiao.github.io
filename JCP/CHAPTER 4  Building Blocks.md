@@ -93,3 +93,7 @@ Object pools exploit serial thread confinement, 'lending' an object to the reque
 One could also use other publication mechanisms for transferring the ownership of a mutable object, it is necessary to ensure that only one thread receives the object being handed off. BlockingQueue makes this easy; with a little more work, it could also done with the atomic *remove* method of ConcurrentMap or the *compareAndSet* method of AtomicReference.
 
 #### 5.3.3 Deques and work stealing
+
+Java 6 also adds another collection types, Deque and BlockingDeque, that extend Queue and BlockingQueue. A Deque is a double-ended queue that allows efficient insertion and removal from both the tail and head. Implementations include **ArrayDeque** and **LinkedBlockingDeque**.
+
+Just as blocking queues lend themselves to the producer-consumer pattern, deques lend themselves to a relative pattern called *work stealing*.
