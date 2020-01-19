@@ -98,4 +98,20 @@ Java 6 also adds another collection types, Deque and BlockingDeque, that extend 
 
 Just as blocking queues lend themselves to the producer-consumer pattern, deques lend themselves to a relative pattern called *work stealing*.
 
+### 5.4 Blocking and interruptible methods
+
+When a thread blocks, it is usually suspended and placed in one of the blocked thread state (BLOCKED, WAITTING or TIMED_WAITTING). A blocked thread must wait for an event that is beyond its control before it can proceed, such as the I/O completes, the lock becomes available, or the external computation finishes. When the external event occurs, the thread is placed back in RUNNING state and becomes eligible again for scheduling. 
+
+When a method can throw InterruptedException, it is telling you that it is a blocking method, and further that if it is interrupted, it will take efforts to stop blocking early.
+
+Interruption is a cooperative mechanism, the most sensible use for interruption is to cancel an activity. Each thread has a boolean property that represents the interrupted status, interrupting a thread sets this status.
+
+When your code calls a blocking method, your method is a blocking method too, and must has a plan for responding interruption. For library code, there are basically two choices:
+
+**Propagate the InterruptedException.**  This is always the most sensible policy if you can get away with it, just propagate it to your caller.
+
+**Restore the interrupt.** Sometimes you can throw InterruptedException, for instance when your code is part of a Runnable. In these situations, you must catch it and restore the interrupted status by calling interrupt on the current thread, so that code higher up the call stack can see that a interrupt is issued.
+
+You should not catch InterruptedException and do nothing in response. The only situation in which it is acceptable to swallow an interrupt is when you are extending Thread and control all the code higher up on the call stack.
+
  
