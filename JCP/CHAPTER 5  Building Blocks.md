@@ -141,3 +141,4 @@ Counting semaphores are used to control the number of activities that can access
 #### 5.5.4 Barriers
 
 Barriers are similar to latches in that they block a group of threads until some event has occurred. The key difference is that with a barrier, all threads must come together at a *barrier point* at the same time in order to proceed. Latches are for waiting for events, barriers are for waiting for other threads. 
+
