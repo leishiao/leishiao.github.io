@@ -114,4 +114,28 @@ When your code calls a blocking method, your method is a blocking method too, an
 
 You should not catch InterruptedException and do nothing in response. The only situation in which it is acceptable to swallow an interrupt is when you are extending Thread and control all the code higher up on the call stack.
 
- 
+###  5.5 Synchronizers
+
+A synchronizer is an object that coordinates the control flow of threads based on its state. **Blocking queues** can act as synchronizer, other type of synchronizers include semaphores, **barriers**, and **latches**. 
+
+You can create your own. 
+
+All synchronizer share certain structural properties: they encapsulate state that determines whether threads arriving at the synchronizer should be allowed to pass or forced to wait, provide methods to manipulate that state, and provide methods to wait efficiently for the synchronizer to enter the desired state.
+
+#### 5.5.1 Latches
+
+A latch is synchronizer that can delay the progress of threads until it reaches its terminal state.
+
+A latch acts as a gate: until the latch reaches the terminal state the gate is closed and no thread can pass, and in the terminal state the gate opens, allowing all threads to pass. Once the latch reaches the terminal state, it cannot change state again, so it remains open forever. Laches can be used to ensure that certain activities can not proceed until other one-time activities complete.
+
+#### 5.5.2 FutureTask
+
+FutureTask also acts like a latch. FutureTask implements Future, which describes an abstract result-bearing computation. A computation presented by FutureTask is implemented with Callable, and can be one of three states: waiting to run, running, or completed. Computation subsumes all the way a computation can complete, including normal completion, cancellation and exception. Once a FutureTask enters the completion state, it stays in that state forever.
+
+#### 5.5.3 Semaphores
+
+Counting semaphores are used to control the number of activities that can access a certain resource or perform a given action at the same time. Counting semaphores can be used to implement resource pools or to impose a bound on a collection.
+
+#### 5.5.4 Barriers
+
+Barriers are similar to latches in that they block a group of threads until some event has occurred. The key difference is that with a barrier, all threads must come together at a barrier point at the same time in order to proceed. Latches are for waiting for events, barriers are for waiting for other threads. 
