@@ -21,3 +21,16 @@ Spelling similar concepts similarly is *information*. Using inconsistent spellin
 If name must be different, then they should mean something different.
 Number-series naming (a1, a2, .. aN) is the opposite if intentional naming, they are noninformative.
 Noise words are another meaningless distinction. *Info* and *Data* are indistinct noise words like *a*, an, and *the*.
+
+**Use Pronounceable Names**
+
+A significant part of our brains is dedicated to the concept of words.
+If you can't pronounce it, you can't discuss it without sound like a idiot.
+This matters because programing is a social activity.
+
+**Use Searchable Names**
+
+Single-letter names and numeric constants have a particular problem in that they are not easy to locate across a body of text.
+In this regard, longer names trump short names, searchable name trumps a constant in code.
+Single-letter names can ONLY be used as local variables inside short methods.
+
