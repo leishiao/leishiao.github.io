@@ -48,7 +48,23 @@ The JMM defines a partial ordering called ***happens-before*** on all actions wi
 
 A ***data race*** occurs when
 
-1.  a variable is read by more than one thread,
+1. a variable is read by more than one thread,
 2. and written by at least one thread,
 3. but the reads and writes are not ordered by *happens-before*.
+
+A ***correctly synchronized program*** is one ***with no data race***;  correctly synchronized programs exhibit sequential consistency, meaning that all actions within the program appear to happen in a fixed, global order. 
+
+The rules for *happens-before* are:
+
+**Program order rule.** Each action in a thread *happens-before* every action in that thread that comes later in the program order.
+
+**Monitor lock rule.** An unlock on a monitor lock *happens-before* every subsequent lock on that same monitor lock.
+
+**Volatile variable rule.** A write to a volatile variable *happens-before* every subsequent read of that same field.
+
+**Thread start rules.** A call to `Thread.start` on a thread *happens-before* every action in the started thread.
+
+**Thread termination rule.** Any action in a thread *happens-before* any other thread detects that thread has terminated, either by successfully return from `Thread.join` or by `Thread.isAlive` returning false.
+
+**Interruption rule.** A thread calling interruption on another thread *happens-before* the interrupted thread detects the interrupt.
 
