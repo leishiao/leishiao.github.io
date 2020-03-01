@@ -44,4 +44,11 @@ Synchronization inhibits the compiler, runtime, and hardware from *reordering me
 
 The  Java Memory Model is specified in terms of *actions*, which include reads and writes to variables, locks and unlocks on monitor, and starting and joining with thread.
 
-The JMM defines a partial ordering called ***happens-before*** on all actions within the program. To guarantee that thread executing action B see the results of action A ,there must be a *happens-before* relationship between A and B.  In the absence of *happens-before* ordering 
+The JMM defines a partial ordering called ***happens-before*** on all actions within the program. To guarantee that thread executing action B see the results of action A ,there must be a *happens-before* relationship between A and B.  In the absence of *happens-before* ordering between two operations, the JVM is free to reorder them as it please.
+
+A ***data race*** occurs when
+
+1.  a variable is read by more than one thread,
+2. and written by at least one thread,
+3. but the reads and writes are not ordered by *happens-before*.
+
