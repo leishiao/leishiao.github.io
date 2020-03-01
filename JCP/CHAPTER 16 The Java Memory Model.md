@@ -25,5 +25,8 @@ The JMM specifies the minimal guarantees the JVM must make about when writes to 
 3. Processor architectures provide varying degrees of cache coherence, some provide minimal guarantees that allow different processors to see different values for the same memory locations at virtually any time. 
 4. Ensuring that every processor knows what every other processor is doing at all time is expensive. Most of the time this information is not needed, so processors relax their memory-coherency guarantees to improve performance.
 5. An architecture's **memory model**  specifies the special instructions required (called **memory barriers** or **fences**) to get the additional coordination guarantees required when sharing data.
-6. 
+6. In order to shield the Java developer from *the differences between memory models* across architectures, Java provides its own memory model, and JVM deals with the differences between the JMM and the underlying platform's memory model by *inserting memory barriers* at the appropriate places.
+7. Fortunately, Java programmers  need not specify the placement of memory barriers, they need only identify when shared state is being accessed, through the proper use of synchronization. 
+
+#### 16.1.2 Reordering
 
