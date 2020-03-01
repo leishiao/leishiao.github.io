@@ -30,3 +30,18 @@ The JMM specifies the minimal guarantees the JVM must make about when writes to 
 
 #### 16.1.2 Reordering
 
+In race conditions and atomicity failures, scheduler interleaves operations so as to cause incorrect results in  insufficiently synchronized programs. 
+
+To make matters worse, the JMM can permit actions to *appear* to execute in different orders from the perspective of different threads, making reasoning about ordering in the absence of synchronization even more complicated.
+
+The various reasons why operations might be delayed or appear to execute out of order can all be grouped into the general category of **reordering** .
+
+*Reordering at the memory level* can make programs behave unexpectedly. It is prohibitively difficult to reason about ordering in the absence of synchronization; it is much easier to ensure that your program uses synchronization appropriately.   
+
+Synchronization inhibits the compiler, runtime, and hardware from *reordering memory operations in ways that would violate the **visibility guarantees** provided by the JMM*. 
+
+#### 16.1.3 The Java Memory Model in 500 words of less.
+
+The  Java Memory Model is specified in terms of *actions*, which include reads and writes to variables, locks and unlocks on monitor, and starting and joining with thread.
+
+The JMM defines a partial ordering called ***happens-before*** on all actions within the program. To guarantee that thread executing action B see the results of action A ,there must be a *happens-before* relationship between A and B.  In the absence of *happens-before* ordering 
