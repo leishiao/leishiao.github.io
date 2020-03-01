@@ -16,5 +16,14 @@ In a single-threaded environment , all these tricks played on our program have n
 
 In a multithreaded environment, since most of the time threads in a concurrent application are each "doing their own thing", it only when multiple threads share data that it is necessary to coordinate activities, and the JVM relies on the program to identify when this is happening by using synchronization.
 
- The JMM specifies the minimal guarantees the JVM must make about when writes to variables become visible to other threads.
+The JMM specifies the minimal guarantees the JVM must make about when writes to variables become visible to other threads.
+
+#### 16.1.1 Platform memory models
+
+1. In a shared-memory multiprocessor architecture, each processor has its own cache that is periodically reconciled with main memory.
+2. And, this introduces the problem of **cache coherence**. 
+3. Processor architectures provide varying degrees of cache coherence, some provide minimal guarantees that allow different processors to see different values for the same memory locations at virtually any time. 
+4. Ensuring that every processor knows what every other processor is doing at all time is expensive. Most of the time this information is not needed, so processors relax their memory-coherency guarantees to improve performance.
+5. An architecture's **memory model**  specifies the special instructions required (called **memory barriers** or **fences**) to get the additional coordination guarantees required when sharing data.
+6. 
 
