@@ -56,7 +56,7 @@ A ***correctly synchronized program*** is one ***with no data race***;  correctl
 
 The rules for *happens-before* are:
 
-**Program order rule.** Each action in a thread *happens-before* every action in that thread that comes later in the program order.
+**Program order rule.** Each action in a thread *happens-before* every action in that thread that comes later in the program order. 
 
 **Monitor lock rule.** An unlock on a monitor lock *happens-before* every subsequent lock on that same monitor lock.
 
@@ -66,5 +66,12 @@ The rules for *happens-before* are:
 
 **Thread termination rule.** Any action in a thread *happens-before* any other thread detects that thread has terminated, either by successfully return from `Thread.join` or by `Thread.isAlive` returning false.
 
-**Interruption rule.** A thread calling interruption on another thread *happens-before* the interrupted thread detects the interrupt.
+**Interruption rule.** *A thread calling interrupt* on another thread *happens-before* the interrupted thread detects the interrupt (either by having InterruptedException thrown, or invoking isInterrupted or interrupted).
 
+**Finnalizer rule.** The end of a constructor for an object *happens-before* the start of the finalizer for that object.
+
+**Transitivity.** If A happens-before B, and B happens-before C, than A happens-before C.
+
+#### 16.1.4 Piggybacking on synchronization
+
+Because of the strength of the happens-before ordering, you can sometimes piggyback on the visibility properties of an existing synchronization.
