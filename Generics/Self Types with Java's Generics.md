@@ -1,6 +1,6 @@
 # Self Types with Java's Generics
 
-In some situations, particularly when implementing the builder pattern or creating other fluent APIs, methods return `this`. The method’s return type is likely to be the same as the class in which the method is defined–but sometimes that doesn’t cut it! If we want to inherit methods and their return type should be the inheriting type (instead of the declaring type), then we’re fresh out of luck. We would need the return type to be something like “the type of this”, often called a *self type* but there is no such thing in Java.
+In some situations, particularly when implementing the **builder pattern** or creating other **fluent APIs**, methods return `this`. The method’s return type is likely to be the **same as the class** in which the method is defined, but sometimes that doesn’t cut it! If we want to inherit methods and their return type should be the inheriting type (instead of the declaring type), then we’re fresh out of luck. We would need the return type to be something like “**the type of this**”, often called a ***self type*** but there is no such thing in Java.
 
 Or is there?
 
@@ -64,7 +64,7 @@ Person doe = new PersonBuilder()
 
 So far, so good.
 
-Now let’s say we do not only have persons in our system–we also have employees and contractors. Of course they are also persons (right?) so `Employee extends Person` and `Contractor extends Person`. And because it went so well with `Person` we decide to create builders for them as well.
+Now let’s say we do not only have persons in our system, we also have employees and contractors. Of course they are also persons (right?) so `Employee extends Person` and `Contractor extends Person`. And because it went so well with `Person` we decide to create builders for them as well.
 
 And here our journey begins. How do we set the name on our `EmployeeBuilder`?
 
@@ -73,8 +73,6 @@ We could just implement a method with the same name and code as in `PersonBuilde
 Let’s try a different approach. What’s our favorite tool for code reuse? Right, [inheritance](https://en.wikipedia.org/wiki/Composition_over_inheritance). (Ok, that was a bad joke. But in this case I’d say that inheritance is ok.) So we have `EmployeeBuilder extend PersonBuilder` and we get `withName` for free.
 
 But while the inherited `withName` indeed returns an `EmployeeBuilder`, the compiler does not know that–the inherited method’s return type is declared as `PersonBuilder`. That’s no good either! Assuming our `EmployeeBuilder` does some employee-specific stuff (like `withHiringDate`) we can’t access those methods if we call in the wrong order:
-
-
 
 ```java
 Employee doe = new EmployeeBuilder()
@@ -99,7 +97,7 @@ public class EmployeeBuilder {
 
 But that requires almost as many lines as the original implementation. Repeating such snippets in every subtype of `PersonBuilder` for each inherited method, is clearly not ideal.
 
-Taking a step back, let’s see how we ended up here. The problem is that the return type of `withName` is explicitly fixed to the class that declares the method: `PersonBuilder`.
+Taking a step back, let’s see how we ended up here. **The problem is** that the return type of `withName` is explicitly fixed to the class that declares the method: `PersonBuilder`.
 
 ```java
 public class PersonBuilder {
@@ -113,18 +111,6 @@ public class PersonBuilder {
 ```
 
 So if the method is inherited, e.g. by `EmployeeBuilder`, the return type remains the same. But it shouldn’t! It should be the type on which the method was called instead of the one that declares it.
-
-![img](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAaCAIAAAA44esqAAAACXBIWXMAAAsSAAALEgHS3X78AAAEJElEQVQ4y3VU+VNaZxTlH0xBQRRrFI1NKxqeBHjsi6JITDXue0TxsasgbohATW2aWE00g5nUxCAmYsUlTTQZW/tLzwfaZAhlzry57+O795y7PZaEY23m3ZsU0AxPpeN0UZzRnKjNy3HIgicjMDqKDRZum5QznNNTkj9GCxzKb50ExU5FsVPGZ2rzbKxJgcIh0N8paJfmWf+PVlrAGG54G0S+hiqf6YfJupsTquuu2nwbi+GpM5xi9ijFJlcvDfYXmvNtCoFTfd2tKnGpSgj5JbM+r5vmWhH7NncMkPKIIcm3ZUAOeQS4ICtg8JTyyL9UugQsRNWVe8y3/JDUWO2ziAP1308YvxsHiNQqX9OtKZyba/wAjIaqSa3QjShENqLitEu30GNYHGyM9psiP0pn2pRzOGlXzffXh4fM0d66xV7jIv4iRt1iCz2rKXVDFEvCHdOVexGyRTaDG53aBQsV6FAH+01h2N2GUI9xsV0d7NTiJDLQEBlojHTpQigb0mYhb8SQF9lRTPiArUU+26kJwqdNOd8sCUAI0ErP9hhCiAiBENUsmVYUO1hXnSSZW8RTQFONH887VKBR5NNXeIyV46gCkr8rne5Qz3dqFqDo7u0ZZYnz0rmWM0r4CxkZwCegC+1yPvO51HxGU+pCdVpks63yWXO1/zMzwVWTM6DYI+IrZC4girrEZajwGm6Ma8vcJOev50l8NRjSNO1/XUV1LjuPQeDayJB8Mfo2eRFjqPSYROPmGt895dygOTrUFEV5TFU+WaE9x2JkNgZsSLhVGfAO/7zgW10OPo+tvElsHe6+OnyxkYz6N/vqw5oyN1GR5Qxt4DRVjU+M/LL+9MXOztuT4/fnn/66uPjn4uLi/Pzvk8OztQev++pDtMCe7Uw8Rd5BS+hhJBaP7+7/cfDhw+nZ6cfT07Ozj/h9Ok6drkRf9RiDOZxRGLN4wm97tPV8N5U6Ojn589279wcHh8Dh0XEqdfzscWKwMYJ9ypaNhDGhFsof9m8k36aOjk/gv7u7F4+/SSZTicRe/PVeNBDDPIq/GclRMBnfjnF/trKzn0xtxl6uPtp8shrb3k4k4vvrq1uxje15zxN0AQ3P+hgRZzB3aOZXln5fW9l0WUPOofBvv8a2XyYehNamXEuPl2MTo8t0qbX62uBXzOlgugrPcEt4qHVGJ7rfrHIuBZ8+/Gm9td5mVtz3WCO9TQGK3ye6NkBxRrKZKY4N3dIIncoyW01+r7x0qNs03W+Zo4UDYn63/qZdXW6v5VrFbCuVJRuDhbmni+wEAru8aExRzCCQvtKjKnXgFY1UCBz4YuJJE8MBAy6XznjBxhCUubRCj07o0ZR5YOgrvGnbrUsfajN2OV7ddJGDzDYKCM1YEWkBVi9tXCGzm+l9tMsKCDK7iS8hFgPM/wJe8VIRPeOuYwAAAABJRU5ErkJggg==)
-
-![img](https://cdn.sanity.io/images/708bnrs8/production/ae4da31c7000675da4d2091a4d0a1a41a79a7e4d-1402x1843.png?w=165&h=217&fit=crop)
-
-### Learn PHP for free!
-
-Make the leap into server-side programming with a comprehensive cover of PHP & MySQL.
-
-Normally RRP $11.95 **Yours absolutely free**
-
-Get the book free
 
 This problem quickly rears its head in fluent APIs, like the builder pattern, where the return type is of critical importance to make the whole API work.
 
@@ -159,15 +145,13 @@ public class SpecialNode extends Node {
 
 A `Stream` is no `Stream` so this doesn’t even compile. Again we have the problem that we would like to say “we return a stream of nodes of the type on which this method was called”.
 
-![java-self-types](https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2016/08/1470115489java-self-types.jpg)
-
 ## Self Types to the Rescue
 
 Some languages have the concept of self types:
 
 **A \*self type\* refers to the type on which a method is called (more formally called the \*receiver\*).**
 
-If a self type is used in an inherited method, it represents a different type in each class that declares or inherits that method–namely *that specific class*, no matter whether it declared or inherited the method. Casually speaking it is the compile-time equivalent of `this.getClass()` or “the type of this”.
+If a self type is used in an inherited method, it represents a different type in each class that declares or inherits that method, namely *that specific class*, no matter whether it declared or inherited the method. Casually speaking it is the compile-time equivalent of `this.getClass()` or “**the type of this**”. Self type simply means the type of the receiver of instance methods.
 
 In the remainder of this post I will notate it as `[this]` (`[self]` would be good, too, but with `[this]` we get some syntax highlighting).
 
@@ -298,8 +282,6 @@ Now `EmployeeBuilder::withName` returns an `EmployeeBuilder` without us having t
 
 Similarly our problems with `Node` goes away:
 
-
-
 ```java
 public class Node<THIS> {
 
@@ -322,7 +304,7 @@ That doesn’t look too bad, right? But there are some limitations and weaknesse
 
 ### Confusing Abstraction
 
-As I said above, what does `Object` even mean? Is it an object that holds, creates, processes or otherwise deals with a person? Because that is how we usually understand a generic type argument. But it is not–it’s just an “Object of Person”, which is rather strange.
+As I said above, what does `Object` even mean? **Is it an object that holds, creates, processes or otherwise deals with a person?** Because that is **how we usually understand a generic type argument**. But it is not, it’s just an “Object of Person”, which is rather strange.
 
 ### Convoluted Types
 
@@ -335,7 +317,7 @@ Stream grandchildren = children
     .flatMap(child -> child.children());
 ```
 
-Calling `children` twice, we “used up” the generic types we declared für `node` and now we get a raw stream. Note that thanks to the recursive declaration of `SpecialNode extends Node` we don’t have that problem there:
+Calling `children` twice, we “used up” the generic types we declared for `node` and now we get a raw stream. Note that thanks to the recursive declaration of `SpecialNode extends Node` we don’t have that problem there:
 
 ```java
 SpecialNode node = new SpecialNode();
@@ -384,7 +366,7 @@ Let’s see if we can’t do a little better than before and tackle some of thos
 
 ### Recursive Generics
 
-Last things first, let’s look at `THIS` being too generic. This can easily be fixed with recursive generics:
+Last things first, let’s look at `THIS` being too generic. This can easily be fixed with **recursive generics**:
 
 ```java
 public class Node<THIS extends Node<THIS>> {
@@ -460,7 +442,7 @@ Now the users of the public classes see clear abstractions and no convoluted typ
 
 ## `THIS` As Argument Type
 
-You might have noticed that all the examples use `[this]` and `THIS` as a return type. Can’t we also use it as a type for arguments? Unfortunately not because while return types are covariant, argument types are contravariant–and `[this]`/`THIS` is inherently covariant. (Check out [this StackOverflow question](http://stackoverflow.com/q/2501023/2525313) for a brief explanation of these terms.)
+You might have noticed that all the examples use `[this]` and `THIS` as a return type. Can’t we also use it as a type for arguments? Unfortunately not because while return types are covariant, argument types are contravariant, and `[this]`/`THIS` is inherently covariant. (Check out [this StackOverflow question](http://stackoverflow.com/q/2501023/2525313) for a brief explanation of these terms.)
 
 If you try to do it (e.g. by adding `void addChild(THIS node)`) following the approach above, it will seem to work out until you try to create the interfaces that bring `Node`, `SpecialNode`, and `VerySpecialNode` into an inheritance relationship. Then the type of `node` can not become more specific as you go down the inheritance tree.
 
@@ -475,6 +457,6 @@ We have seen why we would sometimes need to reference “the type of this” and
 - we created publicly visible concrete implementations that specify themselves as that type (`C extends A`)
 - if required we create an interface inheritance tree that our concrete classes implement
 
-Whether this was worth all the effort and trickery is up to you to decide and depends on the use case you have. Generally speaking, the more methods you can inherit this way the more you’ll feel the benefits (look at [AssertJ’s API implementation](https://github.com/joel-costigliola/assertj-core/tree/2c5f011d3c99d86f5d42a743a28238440729ae7f/src/main/java/org/assertj/core/api) for an example of how many this can be). Conversely the friction from understanding this pattern decreases when the classes you create this way are fundamental for your code base–in line with “if it hurts, do it more often”. If it remains a fringe solution, developers will not know it’s there and stumble into it inadvertently and unexpectedly, being more easily confused.
+Whether this was worth all the effort and trickery is up to you to decide and depends on the use case you have. Generally speaking, the more methods you can inherit this way the more you’ll feel the benefits (look at [AssertJ’s API implementation](https://github.com/joel-costigliola/assertj-core/tree/2c5f011d3c99d86f5d42a743a28238440729ae7f/src/main/java/org/assertj/core/api) for an example of how many this can be). Conversely the friction from understanding this pattern decreases when the classes you create this way are fundamental for your code base, in line with “if it hurts, do it more often”. If it remains a fringe solution, developers will not know it’s there and stumble into it inadvertently and unexpectedly, being more easily confused.
 
 What do you think? Do you see a use case in your code base? I’m interested to hear about it, so leave a comment.
