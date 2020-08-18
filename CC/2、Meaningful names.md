@@ -4,10 +4,8 @@ We name and name and name. Because we do so much of it, we'd better do it well.
 
 **Use Intention-revealing Names**
 
-Choosing good names takes time but it saves more than it take. 
-So take care of your names and change them when you find better ones. 
-Name should tell you why it exist, what it does and how it is used. 
-If a name requires comment, if does not reveal its intent.
+Choosing good names takes time but it saves more than it take. So take care of your names and change them when you find better ones. 
+The name of a variable, function, or class should answer all the big questions. It should tell you why it exists, what it does and how it is used. If a name requires a comment, if does not reveal its intent.
 
 **Avoid Disinformation**
 
